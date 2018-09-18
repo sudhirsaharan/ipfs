@@ -12,6 +12,14 @@
   <input type="file" id="myImg" />
   <button onclick="addImage()">share image</button>
   <div id="showImg"></div>
+  <div>
+  	<h4>
+  		Hash Image 
+  	</h4>
+  	<input id="hashvalue"/>
+  	<button onclick="showImg()">SHow image from hash</button>
+  </div>
+  <img id="myimage" src="">
  <script src="https://cdn.jsdelivr.net/npm/ipfs@0.31.7/dist/index.js"></script>
  <script>
  	const node= new Ipfs({})
@@ -34,7 +42,7 @@
         let val=document.querySelector('#getVal').value
         node.files.get(
         	val,function (err, resx	){
-        		console.log(val)
+        		console.log('hash',hash)
         	}
         )
     }
@@ -55,7 +63,19 @@
     	}
     	read.readAsArrayBuffer(img)
 
+    }
 
+
+    function showImg(){
+    	let hash=document.querySelector('#hashvalue').value
+    	node.files.get(
+                   hash,function(err,res){
+                   	console.log(res[0].content)
+                    let blob= new Blob([res[0].content],{type: "image/png"})
+                    let imageurl= URL.createObjectURL(blob)
+                    document.querySelector("#myimage").src=imageurl
+                   }
+    		)
     }
  </script>
 </html>
